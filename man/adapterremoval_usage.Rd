@@ -17,6 +17,7 @@ already handled as explicit function arguments.
 }
 \examples{
 adapterremoval_usage()
+
 }
 \references{
 Schubert, Lindgreen, and Orlando (2016).

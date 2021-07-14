@@ -2,7 +2,7 @@
 % Please edit documentation in R/bowtie2.R
 \name{bowtie2_version}
 \alias{bowtie2_version}
-\title{Print version information of bowtie2-2.2.3}
+\title{Print version information of bowtie2-2.4.4}
 \usage{
 bowtie2_version()
 }
@@ -12,10 +12,11 @@ The value is 0 when there is not any mistakes
 Otherwise the value is non-zero.
 }
 \description{
-Print version information of bowtie2-2.2.3
+Calling bowtie2_version() prints the version information of 
+the bowtie package used.
 }
 \examples{
-cmdout<-bowtie2_version();cmdout
+bowtie2_version()
 }
 \references{
 Langmead, B., & Salzberg, S. L. (2012). Fast gapped-read

@@ -15,6 +15,7 @@ Print version information of adapterremoval
 }
 \examples{
 adapterremoval_version()
+
 }
 \references{
 Schubert, Lindgreen, and Orlando (2016).

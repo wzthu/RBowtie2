@@ -50,8 +50,7 @@ latest version of R. Rbowtie2 is part of Bioconductor project,
 so you can install Rbowtie2 and its dependencies like this:
 
 ```{r install, eval=FALSE}
-source("http://www.bioconductor.org/biocLite.R")
-biocLite("Rbowtie2")
+BiocManager::install("Rbowtie2")
 ```
 
 ### Loading
@@ -154,7 +153,7 @@ bowtie2_build_usage()
 The variable reads_1 and reads_1 are preprocessed reads file paths. 
 With bowtie2 index, 
 reads will be mapped to reference by calling bowtie2. 
-The result is saved in a sam file whose path is set to samOutput 
+The result is saved in a sam file whose path is set to output 
 
 ```{r bt2align}
 reads_1 <- system.file(package="Rbowtie2", "extdata", 
@@ -163,8 +162,13 @@ reads_2 <- system.file(package="Rbowtie2", "extdata",
                        "bt2", "reads", "reads_2.fastq")
 if(file.exists(file.path(td, "lambda_virus.1.bt2"))){
     (cmdout<-bowtie2(bt2Index = file.path(td, "lambda_virus"),
-        samOutput = file.path(td, "result.sam"),
-    seq1=reads_1,seq2=reads_2,overwrite=TRUE,"--threads 3"))
+        output = file.path(td, "result"),
+        outputType = "sam",
+        seq1=reads_1,
+        seq2=reads_2,
+        overwrite=TRUE,
+        bamFile = NULL,
+        "--threads 3"))
     head(readLines(file.path(td, "result.sam")))
 }
 ```

@@ -2,17 +2,18 @@
 % Please edit documentation in R/bowtie2.R
 \name{bowtie2_usage}
 \alias{bowtie2_usage}
-\title{Print available arguments for bowtie2}
+\title{Print available arguments that can be passed to bowtie2()}
 \usage{
 bowtie2_usage()
 }
 \value{
-bowtie2 available arguments and their usage.
+Information about available arguments that can be passed to bowtie2().
 }
 \description{
-Note that some arguments to the
-bowtie2 are invalid if they are
-already handled as explicit function arguments.
+Calling bowtie2_usage() prints the available arguments that can
+be passed to the ... argument of the bowtie2() function of the package.  
+Note that some arguments are invalid if they are already handled as explicit 
+function arguments.
 }
 \examples{
 bowtie2_usage()

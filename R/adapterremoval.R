@@ -42,6 +42,7 @@
 #' basename = file.path(td,"reads")
 #' ,"--threads 2",overwrite=TRUE)
 #' adapters
+
 identify_adapters <- function(file1,file2,...,basename = NULL,
     overwrite = FALSE){
     file1<-trimws(as.character(file1))
@@ -152,7 +153,7 @@ identify_adapters <- function(file1,file2,...,basename = NULL,
 #' output1=file.path(td,"reads_1.trimmed.fq"),
 #' output2=file.path(td,"reads_2.trimmed.fq"),
 #' basename=file.path(td,"reads.base"),overwrite=TRUE,"--threads 3");cmdout
-#'
+
 remove_adapters <- function(file1,...,adapter1 = NULL,output1 = NULL,
                             file2 = NULL,adapter2 = NULL,output2 = NULL,
                             basename = NULL,interleaved = FALSE,
@@ -170,8 +171,8 @@ remove_adapters <- function(file1,...,adapter1 = NULL,output1 = NULL,
         }else{
             file2<-trimws(as.character(file2))
             if(length(file1)!=length(file2)){
-                stop(paste0("The lengths of arguments `file1` ",
-                            "and `file2` should be the same length"))
+                stop("The lengths of arguments `file1` ",
+                     "and `file2` should be the same length")
             }
         }
     }
@@ -238,6 +239,7 @@ remove_adapters <- function(file1,...,adapter1 = NULL,output1 = NULL,
 #' @export adapterremoval_usage
 #' @examples
 #' adapterremoval_usage()
+#' 
 adapterremoval_usage<- function(){
     .callbinary("AdapterRemoval","-h")
 }
@@ -255,14 +257,53 @@ adapterremoval_usage<- function(){
 #' @export adapterremoval_version
 #' @examples
 #' adapterremoval_version()
+#' 
 adapterremoval_version<- function(){
     .callbinary("AdapterRemoval","--version")
 }
 
-.callbinary<- function(bin, args)
+#' @name .callbinary
+#' 
+#' @title Make system call for binaries
+#' 
+#' @description Function that makes a system call for the bowtie binaries. 
+#' Note it is not intended to be used outside of the package.
+#' 
+#' @author Zheng Wei
+#' 
+#' @param bin1 \code{Character}. The binary used for the system call.
+#' 
+#' @param args1 \code{Character}. The arguments to pass to the binary.
+#' 
+#' @param op \code{Character}. Optional: Generally used if needed to pipe to another binary.
+#' 
+#' @param bin2 \code{Character}. Optional: Another binary that can be used in the system call.
+#' Generally the output of the first binary is piped to the this binary.
+#' 
+#' @param args2 \code{Character} Optional: The arguments to pass to the second binary.
+#' 
+#' @param path \code{Character} Optional: If passed to function, returns the path.
+#' Needed for Rsamtools to convert from sam to bam. 
+#' 
+#' @return The output of the system call or the path provided.
+
+
+.callbinary<- function(bin1, args1, op = NULL, bin2 = NULL, args2 = NULL, path = NULL)
 {
-    args <- gsub("^ *| *$", "", args)
-    call <- paste(shQuote(file.path(system.file(package="Rbowtie2"), bin)), args)
+    args1 <- gsub("^ *| *$", "", args1)
+    args2 <- gsub("^ *| *$", "", args2)
+    
+    if (is.null(op) && is.null(bin2))
+        call <- paste(shQuote(file.path(system.file(package="Rbowtie2"), bin1)), args1)
+    else if (!is.null(op) && !is.null(bin2))
+        call <- paste(shQuote(file.path(system.file(package="Rbowtie2"), bin1)), args1, op, shQuote(file.path(system.file(package="Rbowtie2"), bin2)), args2)
+    else
+        stop("Bug exists which needs to be fixed")
+    
     output <- system(call, intern=TRUE,show.output.on.console=TRUE)
-    return(output)
+    
+    if (!is.null(path))
+        return(path)
+    else
+        return(output)
 }
